@@ -18,7 +18,7 @@
         try {
           return localStorage.getItem(this.STORAGE_KEY)
         } catch {
-          return null
+          return 'light'
         }
       },
 
@@ -35,8 +35,7 @@
       },
 
       getEffectiveTheme() {
-        const stored = this.getStoredTheme()
-        return stored || this.getSystemTheme()
+        return 'light'
       },
 
       isUsingSystemTheme() {
@@ -60,28 +59,15 @@
       },
 
       toggle() {
-        const currentTheme = this.getEffectiveTheme()
-        // Simply toggle between light and dark
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
-
-        this.setStoredTheme(newTheme)
-        this.applyTheme(newTheme)
+        // Force light theme only - disable toggle functionality
+        this.applyTheme('light')
       },
 
       init() {
         if (this.initialized) return
 
-        // Set initial theme (maintain current theme when refreshing page)
-        this.applyTheme(this.getEffectiveTheme())
-
-        // Listen for system theme changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-          const newSystemTheme = e.matches ? 'dark' : 'light'
-
-          // Always follow system theme changes and update stored theme preference
-          this.setStoredTheme(newSystemTheme)
-          this.applyTheme(newSystemTheme)
-        })
+        // Force light theme only
+        this.applyTheme('light')
 
         this.initialized = true
       }
